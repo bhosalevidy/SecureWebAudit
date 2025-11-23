@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SecureWebAudit · Landing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    /* Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0f172a;
+      color: #fff;
+      line-height: 1.6;
+    }
+
+    /* ===== Header ===== */
+    .main-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.7); /* glass effect */
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    .main-header.shrink {
+      padding: 0.6rem 2rem;
+      background: rgba(15, 23, 42, 0.9);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-icon {
+      width: 34px;
+      height: 34px;
+      filter: drop-shadow(0 0 6px #00ffff);
+    }
+    .site-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #00ffff;
+      letter-spacing: 1px;
+      cursor: pointer;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.8rem;
+    }
+    .nav-links a {
+      color: #e5e5e5;
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      padding-bottom: 5px;
+    }
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      width: 0%;
+      height: 3px;
+      left: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, #00ffff, #38bdf8);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover { color: #00ffff; }
+    .nav-links a:hover::after { width: 100%; }
+
+    .login-btn {
+      background: linear-gradient(135deg, #00ffff, #38bdf8);
+      color: #000;
+      padding: 0.6rem 1.3rem;
+      border-radius: 30px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
+    }
+    .login-btn:hover {
+      background: linear-gradient(135deg, #38bdf8, #00ffff);
+      box-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4rem 6%;
+      background: linear-gradient(135deg, #0a0a0a, #111);
+      min-height: 50vh;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .hero-content { flex: 1; max-width: 500px; animation: fadeInLeft 1s ease-in; }
+    .hero-content h1 { font-size: 2.8rem; margin-bottom: 1rem; color: #00ffff; }
+    .hero-content p { font-size: 1.2rem; margin-bottom: 1.5rem; color: #bbb; }
+    .cta-button {
+      padding: 0.8rem 2rem;
+      background-color: #00ffff;
+      color: #000;
+      border-radius: 10px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: 0.3s ease;
+    }
+    .cta-button:hover { background-color: #00c7c7; box-shadow: 0 0 15px #00ffff; }
+    .hero-image { flex: 1; text-align: center; animation: fadeInRight 1s ease-in; }
+    .hero-image img {
+      width: 100%;
+      max-width: 550px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+    }
+
+    @keyframes fadeInLeft { from { transform: translateX(-30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes fadeInRight { from { transform: translateX(30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+    /* ===== Features ===== */
+    .features { padding: 1rem 2rem; text-align: center; }
+    .features h2 { font-size: 2rem; margin-bottom: 2rem; color: #38bdf8; }
+    .cards { display: flex; flex-wrap: wrap; justify-content: center; gap: 3rem; }
+    .card { width: 280px; height: 220px; perspective: 1000px; }
+    .card-inner {
+      position: relative; width: 100%; height: 100%;
+      transform-style: preserve-3d; transition: transform 0.8s;
+    }
+    .card:hover .card-inner { transform: rotateY(180deg); }
+    .card-front, .card-back {
+      position: absolute; width: 100%; height: 100%;
+      background: #1e293b; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      padding: 1rem; text-align: center; font-size: 1.2rem;
+      border-radius: 12px; backface-visibility: hidden;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+    }
+    .card-back { background: #00ffff; color: #000; transform: rotateY(180deg); }
+    .learn-more { display: inline-block; margin-top: 2rem; color: #38bdf8; text-decoration: underline; }
+
+    /* ===== Why Choose Us ===== */
+    .why-choose-us { padding: 4rem 2rem; background: #1e293b; text-align: center; }
+    .why-choose-us h2 { color: #38bdf8; font-size: 2rem; margin-bottom: 1rem; }
+    .why-choose-us p { max-width: 700px; margin: 0.5rem auto; color: #ccc; font-size: 1rem; }
+
+    /* ===== Testimonials ===== */
+    .testimonial-section { background: #111; padding: 2rem 2rem; text-align: center; }
+    .testimonial-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; }
+    .testimonial-card {
+      background: #1e1e1e; border-radius: 15px; padding: 1.5rem;
+      color: #fff; width: 250px; transition: transform 0.4s ease, box-shadow 0.4s ease;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.15); cursor: pointer; text-align: center;
+    }
+    .testimonial-card img {
+      width: 100px; height: 100px; border-radius: 50%;
+      object-fit: cover; border: 3px solid #00ffff; margin-bottom: 1rem;
+    }
+    .testimonial-card:hover { transform: scale(1.1); box-shadow: 0 0 30px #00ffff, 0 0 60px #00ffff; }
+
+    /* ===== CTA ===== */
+    .cta-section {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      padding: 5rem 2rem; text-align: center;
+    }
+    .cta-box {
+      background: rgba(255, 255, 255, 0.05); border: 2px solid transparent;
+      border-radius: 20px; padding: 3rem 2rem; max-width: 700px; margin: auto;
+      transition: all 0.3s ease; box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    }
+    .cta-box:hover { border-color: #00ffff; transform: scale(1.02); box-shadow: 0 0 25px #00ffff; }
+    .cta-box h2 { font-size: 2rem; margin-bottom: 1rem; color: #fff; }
+    .cta-box p { color: #ccc; margin-bottom: 1.5rem; font-size: 1.1rem; }
+    .cta-btn {
+      padding: 12px 28px; background: #00ffff; color: #111;
+      font-weight: 600; border-radius: 30px; text-decoration: none;
+      transition: 0.3s ease;
+    }
+    .cta-btn:hover { background: #00e0e0; color: #000; box-shadow: 0 0 12px #00ffff, 0 0 20px #00ffff; }
+
+    /* ===== Footer ===== */
+    footer { background: #1e293b; padding: 2rem; text-align: center; font-size: 0.9rem; color: #aaa; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="main-header" id="mainHeader">
+    <div class="logo">
+     
+      <span class="site-title">SecureWebAudit</span>
+    </div>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="#features">Features</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="/help">Help</a>
+    </nav>
+    <a href="/login" class="login-btn">Login</a>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Welcome to SecureWebAudit</h1>
+      <p>Your smart solution for automated website testing and security analysis. Scan your site in seconds and get instant reports.</p>
+      <a href="/login" class="cta-button">Get Started</a>
+    </div>
+    <div class="hero-image">
+      <img src="/static/cyber-illustration.svg" alt="Cyber Illustration">
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <h2>What We Offer</h2>
+    <div class="cards">
+      <div class="card"><div class="card-inner">
+        <div class="card-front">Functional Testing</div>
+        <div class="card-back"><p>Check usability, responsiveness, input fields, buttons & flows.</p></div>
+      </div></div>
+      <div class="card"><div class="card-inner">
+        <div class="card-front">Security scan</div>
+        <div class="card-back"><p>Check basic security of websites to avoid security issues.</p></div>
+      </div></div>
+      <div class="card"><div class="card-inner">
+        <div class="card-front">Graph Dashboard</div>
+        <div class="card-back"><p>Visualize test metrics like bugs, alerts, risk level.</p></div>
+      </div></div>
+      <div class="card"><div class="card-inner">
+        <div class="card-front">Reports</div>
+        <div class="card-back"><p>Generate PDFs for client-ready technical reports.</p></div>
+      </div></div>
+    </div>
+    <a href="/help" class="learn-more">Learn More →</a>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="why-choose-us">
+    <h2>Why Choose SecureWebAudit?</h2>
+    <p>Modern UI · Real-time Scan · Trusted Tools · One-click Reports</p>
+    <p>Pariatur repellat ullam quidem voluptatem cum voluptate magnam placeat numquam quibusdam hic accusamus soluta quo a provident vero,
+       et consequuntur fugiat iste?</p>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonial-section" id="testimonials">
+    <h2 style="color:#38bdf8; margin-bottom:2rem;">What Our Users Say</h2>
+    <div class="testimonial-container">
+      <div class="testimonial-card">
+        <img src="/static/assets/img1.webp" alt="User 1">
+        <h4>Rahul Sinha</h4>
+        <p>“SecureWebAudit made my testing process effortless. Highly recommended!”</p>
+      </div>
+      <div class="testimonial-card">
+        <img src="/static/assets/img2.jpg" alt="User 2">
+        <h4>Ayesha Mehta</h4>
+        <p>“Love the automation and detailed reports. It feels like a professional suite.”</p>
+      </div>
+      <div class="testimonial-card">
+        <img src="/static/assets/img3.jpeg" alt="User 3">
+        <h4>Vikram Patel</h4>
+        <p>“Fast, functional, and secure. Saved hours of manual work.”</p>
+      </div>
+      <div class="testimonial-card">
+        <img src="/static/assets/img4.jpg" alt="User 4">
+        <h4>Neha Kapoor</h4>
+        <p>“Super clean UI and smooth performance. The flip cards are so cool!”</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call To Action -->
+  <section class="cta-section">
+    <div class="cta-box">
+      <h2>Ready to Test Your Website?</h2>
+      <p>Start scanning now for bugs, threats, and performance issues.</p>
+      <a href="/login" class="cta-btn">Get Started</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Made with ❤️ using Python · Flask · Selenium · OWASP ZAP</p>
+    <p>Contact: support@securewebaudit.com</p>
+  </footer>
+
+  <!-- JS for shrink header -->
+  <script>
+    window.addEventListener("scroll", function() {
+      const header = document.getElementById("mainHeader");
+      if (window.scrollY > 50) {
+        header.classList.add("shrink");
+      } else {
+        header.classList.remove("shrink");
+      }
+    });
+  </script>
+</body>
+</html>

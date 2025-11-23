@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Scan History - SecureWebAudit</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #0f172a;
+    color: #fff;
+  }
+  .container {
+    width: 95%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 2rem;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #38bdf8;
+  }
+  .search-bar {
+    margin-bottom: 1rem;
+    text-align: right;
+  }
+  input[type="text"] {
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    width: 250px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #1e293b;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  }
+  th, td {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid #334155;
+    text-align: left;
+  }
+  th {
+    background: #0f172a;
+    color: #38bdf8;
+    cursor: pointer;
+  }
+  tr:hover {
+    background: #334155;
+  }
+  .btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: #38bdf8;
+    color: #0f172a;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  .btn:hover {
+    background: #0ea5e9;
+  }
+  .status-pass { color: #22c55e; font-weight: bold; }
+  .status-fail { color: #ef4444; font-weight: bold; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h2>Scan History</h2>
+    
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search by URL..." onkeyup="filterTable()">
+    </div>
+
+    <table id="historyTable">
+      <thead>
+        <tr>
+          <th>Website URL</th>
+          <th>Date/Time</th>
+          <th>Total Tests</th>
+          <th>Passed</th>
+          <th>Failed</th>
+          <th>Success Rate</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Example rows, replace with Flask loop -->
+        <tr>
+          <td>https://example.com</td>
+          <td>2025-09-17 21:30</td>
+          <td>10</td>
+          <td class="status-pass">8</td>
+          <td class="status-fail">2</td>
+          <td>80%</td>
+          <td>
+            <a href="/dashboard?url=https://example.com" class="btn">View</a>
+            <a href="/input?url=https://example.com" class="btn">Re-run</a>
+          </td>
+        </tr>
+        <tr>
+          <td>https://demo.com</td>
+          <td>2025-09-16 18:20</td>
+          <td>10</td>
+          <td class="status-pass">6</td>
+          <td class="status-fail">4</td>
+          <td>60%</td>
+          <td>
+            <a href="/dashboard?url=https://demo.com" class="btn">View</a>
+            <a href="/input?url=https://demo.com" class="btn">Re-run</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function filterTable() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const table = document.getElementById("historyTable");
+      const trs = table.getElementsByTagName("tr");
+      
+      for (let i = 1; i < trs.length; i++) {
+        let td = trs[i].getElementsByTagName("td")[0];
+        if (td) {
+          trs[i].style.display = td.textContent.toLowerCase().includes(input) ? "" : "none";
+        }
+      }
+    }
+  </script>
+</body>
+</html>

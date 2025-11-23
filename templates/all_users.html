@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>All Users</title>
+<style>
+body{font-family:sans-serif; background:#f0f0f0; padding:20px;}
+table{border-collapse: collapse; width:100%; background:#fff; box-shadow:0 0 10px rgba(0,0,0,0.1);}
+th, td{border:1px solid #ccc; padding:10px; text-align:left;}
+th{background:#e67e22; color:#fff;}
+tr:nth-child(even){background:#f9f9f9;}
+button{padding:5px 10px; background:red; color:white; border:none; cursor:pointer;}
+button:hover{opacity:0.8;}
+</style>
+</head>
+<body>
+<h1>All Registered Users</h1>
+<table>
+<tr>
+    <th>ID</th>
+    <th>Full Name</th>
+    <th>Username</th>
+    <th>Email</th>
+    <th>Verified</th>
+    <th>Action</th>
+</tr>
+{% for u in users %}
+<tr>
+    <td>{{ u['id'] }}</td>
+    <td>{{ u['fullname'] }}</td>
+    <td>{{ u['username'] }}</td>
+    <td>{{ u['email'] }}</td>
+    <td>{{ 'Yes' if u['verified'] else 'No' }}</td>
+    <td>
+        <form action="{{ url_for('delete_user', user_id=u['id']) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
+            <button type="submit">Delete</button>
+        </form>
+    </td>
+</tr>
+{% endfor %}
+</table>
+</body>
+</html>

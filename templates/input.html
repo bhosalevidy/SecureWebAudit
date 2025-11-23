@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Run Test - SecureWebAudit</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
+body { background:#0f172a; color:#fff; min-height:100vh; display:flex; flex-direction:column; align-items:center; }
+
+/* ===== Header ===== */
+.main-header {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:1rem 2.5rem; position:fixed; top:0; width:100%; z-index:1000;
+  background:rgba(15,23,42,0.8); backdrop-filter: blur(12px);
+  border-bottom:1px solid rgba(0,255,255,0.2); transition: all 0.3s ease;
+}
+.main-header.shrink { padding:0.6rem 2rem; background:rgba(15,23,42,0.9); }
+.logo { display:flex; align-items:center; gap:10px; }
+.site-title { font-size:1.6rem; font-weight:700; color:#00ffff; letter-spacing:1px; cursor:pointer; }
+.nav-links { display:flex; gap:1.8rem; }
+.nav-links a { color:#e5e5e5; text-decoration:none; font-weight:500; position:relative; padding-bottom:5px; }
+.nav-links a::after { content:""; position:absolute; width:0%; height:3px; left:0; bottom:0; background:linear-gradient(90deg,#00ffff,#38bdf8); border-radius:2px; transition: width 0.3s ease; }
+.nav-links a:hover { color:#00ffff; }
+.nav-links a:hover::after { width:100%; }
+.login-btn { background: linear-gradient(135deg,#00ffff,#38bdf8); color:#000; padding:0.6rem 1.3rem; border-radius:30px; font-weight:600; text-decoration:none; transition:all 0.3s ease; box-shadow:0 0 12px rgba(0,255,255,0.3); }
+.login-btn:hover { background:linear-gradient(135deg,#38bdf8,#00ffff); box-shadow:0 0 20px #00ffff, 0 0 40px #00ffff; }
+
+/* ===== Page Heading ===== */
+.page-heading { margin-top:120px; margin-bottom:30px; font-size:2rem; font-weight:600; color:#00ffff; text-align:center; letter-spacing:1px; }
+
+/* ===== Container ===== */
+.container {
+  width:1300px; max-width:95%; background:#1e293b;
+  border-radius:25px; box-shadow:0 0 35px rgba(0,255,255,0.3);
+  padding:30px 50px; display:flex; flex-direction:row; gap:40px;
+  justify-content:space-between; align-items:flex-start;
+}
+
+/* ===== Left Form ===== */
+.form-section {
+  flex:2;
+  display:flex; flex-direction:column; gap:20px;
+}
+.form-section h2 { text-align:left; color:#00ffff; font-size:1.8rem; margin-bottom:10px; }
+.form-section label { font-weight:600; margin-bottom:5px; display:block; }
+.form-section input[type="text"], .form-section select {
+  width:100%; padding:14px; border:2px solid #00ffff; border-radius:12px;
+  background:transparent; color:#fff; outline:none; transition:0.3s; font-size:1rem;
+}
+.form-section input::placeholder { color:#00ffff; }
+.form-section input:focus, .form-section select:focus { border-color:#38bdf8; box-shadow:0 0 12px #38bdf8; }
+.form-section select { background:#0f172a; color:#00ffff; }
+
+/* Dropdown options */
+.form-section select option { background:#1e293b; color:#fff; }
+
+/* ===== Modules Box ===== */
+.module-select-container { margin-top:15px; }
+.select-all { display:flex; align-items:center; gap:8px; font-size:0.9rem; margin-bottom:10px; }
+.select-all input[type="checkbox"] { transform:scale(1.2); accent-color:#00ffff; cursor:pointer; }
+.module-container { display:flex; flex-wrap:wrap; gap:12px; }
+.module-container div { flex:1 1 120px; display:flex; align-items:center; justify-content:center; gap:5px;
+  padding:12px 20px; border-radius:12px; background:#0f172a; cursor:pointer; transition:0.3s; border:2px solid #00ffff; user-select:none; text-align:center; }
+.module-container div:hover { background:#00ffff; color:#000; }
+.module-container input[type="checkbox"] { display:none; }
+.module-container input[type="checkbox"] + span { pointer-events:none; padding:5px 8px; border-radius:8px; }
+.module-container input[type="checkbox"]:checked + span { background:#00ffff; color:#000; }
+
+/* ===== Run Test Button ===== */
+.run-test-btn { margin-top:20px; padding:16px; background:#00ffff; color:#000; border:none; border-radius:12px;
+  font-weight:700; font-size:1.1rem; cursor:pointer; transition:0.3s; text-transform:uppercase; width:100%; }
+.run-test-btn:hover { background:#00c7c7; box-shadow:0 0 12px #00ffff; }
+
+/* ===== Right Info Box ===== */
+.info-box {
+  flex:1;
+  background:#0f172a; border-radius:20px; padding:25px;
+  box-shadow:0 0 20px rgba(0,255,255,0.2);
+}
+.info-box h3 { color:#00ffff; margin-bottom:15px; }
+.info-box p { color:#fff; margin-bottom:10px; line-height:1.5; }
+.info-box ul { padding-left:15px; margin-top:10px; }
+.info-box ul li { margin-bottom:8px; }
+
+/* Spinner Overlay */
+#spinnerOverlay {
+  display:none;
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.85); z-index:2000;
+  justify-content:center; align-items:center; flex-direction:column;
+  color:#00ffff; font-weight:bold; font-size:1.2rem; text-align:center; gap:15px;
+}
+#spinnerOverlay .loader {
+  border:6px solid #f3f3f3; border-top:6px solid #00ffff; border-radius:50%;
+  width:60px; height:60px; animation:spin 1s linear infinite;
+}
+@keyframes spin {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+
+#spinnerText {
+  font-size:1.3rem;
+  animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse {
+  0% { color: #00ffff; }
+  50% { color: #38bdf8; }
+  100% { color: #00ffff; }
+}
+</style>
+</head>
+<body>
+
+<header class="main-header" id="mainHeader">
+  <div class="logo"><span class="site-title">SecureWebAudit</span></div>
+  <nav class="nav-links">
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('login') }}">Login</a>
+    <a href="{{ url_for('help_page') }}">Help</a>
+  </nav>
+  <a href="{{ url_for('login') }}" class="login-btn">Login</a>
+</header>
+
+<div class="page-heading">Run Security & Functional Test</div>
+
+<div class="container">
+  <div class="form-section">
+    <h2>Scan Configuration</h2>
+    <form id="scanForm" method="POST" action="{{ url_for('dashboard') }}">
+      <label for="url">Website URL</label>
+      <input type="text" id="url" name="url" placeholder="https://example.com" required>
+
+      <label for="scanType">Scan Type</label>
+      <select id="scanType" name="scanType" required>
+        <option value="functional">Functional Test</option>
+        <option value="security">Security Test</option>
+        <option value="both">Functional + Security</option>
+      </select>
+
+      <div class="module-select-container">
+        <div class="select-all">
+          <input type="checkbox" id="allModules">
+          <label for="allModules">Select All Modules</label>
+        </div>
+        <div class="module-container">
+          <div><input type="checkbox" name="modules" value="title"><span>Title</span></div>
+          <div><input type="checkbox" name="modules" value="h1"><span>H1</span></div>
+          <div><input type="checkbox" name="modules" value="links"><span>Links</span></div>
+          <div><input type="checkbox" name="modules" value="images"><span>Images</span></div>
+          <div><input type="checkbox" name="modules" value="xss"><span>XSS</span></div>
+          <div><input type="checkbox" name="modules" value="sqli"><span>SQLi</span></div>
+          <div><input type="checkbox" name="modules" value="headers"><span>Headers</span></div>
+          <div><input type="checkbox" name="modules" value="ssl"><span>SSL</span></div>
+        </div>
+      </div>
+
+      <button type="button" class="run-test-btn" id="runTestBtn">Run Test</button>
+    </form>
+  </div>
+
+  <div class="info-box">
+    <h3>Scan Tips & Info</h3>
+    <p>Configure your scan carefully:</p>
+    <ul>
+      <li>Choose only required modules for faster scan.</li>
+      <li>Demo mode simulates results without live testing.</li>
+      <li>Live scan requires valid website URL.</li>
+      <li>demo website</li>
+      <li>https://demoblaze.com</li>
+      <li>https://example.com</li>
+    </ul>
+  </div>
+</div>
+
+<div id="spinnerOverlay">
+  <div class="loader"></div>
+  <div id="spinnerText">Initializing scan... 0%</div>
+</div>
+
+<script>
+// Header shrink
+window.addEventListener("scroll", () => {
+  const header = document.getElementById("mainHeader");
+  window.scrollY > 50 ? header.classList.add("shrink") : header.classList.remove("shrink");
+});
+
+// Modules select all and toggle
+document.getElementById('allModules').addEventListener('change', function(){
+  const modules = document.querySelectorAll('.module-container input[type="checkbox"]');
+  modules.forEach(m => {
+    m.checked = this.checked;
+    const span = m.nextElementSibling;
+    span.style.background = m.checked ? '#00ffff' : '#0f172a';
+    span.style.color = m.checked ? '#000' : '#fff';
+  });
+});
+document.querySelectorAll('.module-container div').forEach(box => {
+  box.addEventListener('click', function(){
+    const checkbox = this.querySelector('input[type="checkbox"]');
+    if(checkbox){
+      checkbox.checked = !checkbox.checked;
+      const span = this.querySelector('span');
+      span.style.background = checkbox.checked ? '#00ffff' : '#0f172a';
+      span.style.color = checkbox.checked ? '#000' : '#fff';
+    }
+  });
+});
+
+// Run test with stage messages & animation
+document.getElementById('runTestBtn').addEventListener('click', async function() {
+  const spinner = document.getElementById('spinnerOverlay');
+  const spinnerText = document.getElementById('spinnerText');
+  const form = document.getElementById('scanForm');
+
+  spinner.style.display = 'flex';
+
+  const stages = [
+    "Initializing scan",
+    "Checking modules",
+    "Running functional tests",
+    "Checking its working",
+    "Running security tests",
+    "Analyzing headers",
+    "Checking SSL/TLS",
+    "analyzing modules",
+    "Finalizing results"
+  ];
+
+  let progress = 0;
+  let stageIndex = 0;
+
+  const loop = setInterval(() => {
+    progress += Math.floor(Math.random() * 5 + 2); // random increment
+    if (progress > 100) progress = 100;
+
+    if(progress > ((stageIndex + 1) * (100 / stages.length)) && stageIndex < stages.length - 1){
+      stageIndex++;
+    }
+
+    spinnerText.textContent = `${stages[stageIndex]}... ${Math.floor(progress)}%`;
+  }, 400);
+
+  const formData = new FormData(form);
+  const response = await fetch(form.action, { method:'POST', body:formData });
+
+  clearInterval(loop);
+  spinnerText.textContent = "Scan Completed! 100%";
+
+  const html = await response.text();
+  document.open();
+  document.write(html);
+  document.close();
+});
+</script>
+
+</body>
+</html>

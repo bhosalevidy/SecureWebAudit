@@ -1,0 +1,44 @@
+{
+    "summary": {
+        "passed": 3,
+        "failed": 4
+    },
+    "details": {
+        "tests": [
+            {
+                "name": "Open Homepage",
+                "status": "passed"
+            },
+            {
+                "name": "Open Phones Category",
+                "status": "passed"
+            },
+            {
+                "name": "Select First Product",
+                "status": "failed",
+                "error": "Message: no such element: Unable to locate element: {\"method\":\"css selector\",\"selector\":\".card-title a\"}\n  (Session info: chrome=139.0.7258.155); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception\nStacktrace:\n\tGetHandleVerifier [0x0xbaa8a3+63283]\n\tGetHandleVerifier [0x0xbaa8e4+63348]\n\t(No symbol) [0x0x9e3e43]\n\t(No symbol) [0x0xa2c8de]\n\t(No symbol) [0x0xa2cc7b]\n\t(No symbol) [0x0xa74ef2]\n\t(No symbol) [0x0xa51464]\n\t(No symbol) [0x0xa7271a]\n\t(No symbol) [0x0xa51216]\n\t(No symbol) [0x0xa20855]\n\t(No symbol) [0x0xa216f4]\n\tGetHandleVerifier [0x0xe1bb43+2623955]\n\tGetHandleVerifier [0x0xe16daa+2604090]\n\tGetHandleVerifier [0x0xbd069a+218410]\n\tGetHandleVerifier [0x0xbc0ed8+154984]\n\tGetHandleVerifier [0x0xbc742d+180925]\n\tGetHandleVerifier [0x0xbb22b8+94536]\n\tGetHandleVerifier [0x0xbb2442+94930]\n\tGetHandleVerifier [0x0xb9d5ea+9338]\n\tBaseThreadInitThunk [0x0x75fd5d49+25]\n\tRtlInitializeExceptionChain [0x0x76f5d1ab+107]\n\tRtlGetAppContainerNamedObjectPath [0x0x76f5d131+561]\n"
+            },
+            {
+                "name": "Add to Cart",
+                "status": "failed",
+                "error": "Message: no such element: Unable to locate element: {\"method\":\"link text\",\"selector\":\"Add to cart\"}\n  (Session info: chrome=139.0.7258.155); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception\nStacktrace:\n\tGetHandleVerifier [0x0xbaa8a3+63283]\n\tGetHandleVerifier [0x0xbaa8e4+63348]\n\t(No symbol) [0x0x9e3e43]\n\t(No symbol) [0x0xa2c8de]\n\t(No symbol) [0x0xa2cc7b]\n\t(No symbol) [0x0xa74ef2]\n\t(No symbol) [0x0xa51464]\n\t(No symbol) [0x0xa7271a]\n\t(No symbol) [0x0xa51216]\n\t(No symbol) [0x0xa20855]\n\t(No symbol) [0x0xa216f4]\n\tGetHandleVerifier [0x0xe1bb43+2623955]\n\tGetHandleVerifier [0x0xe16daa+2604090]\n\tGetHandleVerifier [0x0xbd069a+218410]\n\tGetHandleVerifier [0x0xbc0ed8+154984]\n\tGetHandleVerifier [0x0xbc742d+180925]\n\tGetHandleVerifier [0x0xbb22b8+94536]\n\tGetHandleVerifier [0x0xbb2442+94930]\n\tGetHandleVerifier [0x0xb9d5ea+9338]\n\tBaseThreadInitThunk [0x0x75fd5d49+25]\n\tRtlInitializeExceptionChain [0x0x76f5d1ab+107]\n\tRtlGetAppContainerNamedObjectPath [0x0x76f5d131+561]\n"
+            },
+            {
+                "name": "Open Cart Page",
+                "status": "passed"
+            },
+            {
+                "name": "Demo Failure Step 1",
+                "status": "failed",
+                "error": "Forced failure for dashboard"
+            },
+            {
+                "name": "Demo Failure Step 2",
+                "status": "failed",
+                "error": "Forced failure for dashboard"
+            }
+        ],
+        "passed": 3,
+        "failed": 4
+    }
+}

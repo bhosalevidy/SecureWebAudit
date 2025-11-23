@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OTP Verification - SecureWebAudit</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1c2635);
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ===== Header from Landing/Login ===== */
+  .main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2.5rem;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+    transition: all 0.3s ease;
+  }
+  .main-header.shrink { padding: 0.6rem 2rem; background: rgba(15,23,42,0.9); }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-icon { width: 34px; height: 34px; filter: drop-shadow(0 0 6px #00ffff); }
+  .site-title { font-size: 1.6rem; font-weight: 700; color: #00ffff; letter-spacing: 1px; cursor: pointer; }
+  .nav-links { display: flex; gap: 1.8rem; }
+  .nav-links a {
+    color: #e5e5e5;
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+    padding-bottom: 5px;
+  }
+  .nav-links a::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 3px;
+    left: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, #00ffff, #38bdf8);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover { color: #00ffff; }
+  .nav-links a:hover::after { width: 100%; }
+  .login-btn {
+    background: linear-gradient(135deg, #00ffff, #38bdf8);
+    color: #000;
+    padding: 0.6rem 1.3rem;
+    border-radius: 30px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 12px rgba(0,255,255,0.3);
+  }
+  .login-btn:hover {
+    background: linear-gradient(135deg, #38bdf8, #00ffff);
+    box-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+  }
+
+  /* ===== Page Heading ===== */
+  .page-heading {
+    margin-top: 120px;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #00ffff;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  /* ===== Container ===== */
+  .container {
+    display: flex;
+    width: 700px;
+    height: 450px;
+    border-radius: 80px;
+    box-shadow: 0 0 25px rgba(0,255,255,0.3);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .container.show { opacity: 1; transform: translateY(0); }
+
+  .form-section {
+    flex: 1;
+    padding: 60px 40px;
+    background: #1e293b;
+    border-right: 1px solid #0f172a;
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .form-section.show { opacity: 1; transform: translateX(0); }
+
+  .form-section h2 { text-align: center; margin-bottom: 20px; color: #00ffff; }
+  .otp-inputs { display: flex; justify-content: space-between; margin-top: 20px; }
+  .otp-inputs input {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    text-align: center;
+    border: 2px solid #00ffff;
+    border-radius: 6px;
+    background: transparent;
+    color: white;
+    outline: none;
+    transition: 0.3s;
+  }
+  .otp-inputs input:focus { border-color: #38bdf8; box-shadow: 0 0 8px #38bdf8; }
+
+  .btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: #00ffff;
+    color: #000;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: 0.3s;
+    margin-top: 20px;
+  }
+  .btn:hover { background: #00c7c7; box-shadow: 0 0 12px #00ffff; }
+
+  .welcome-section {
+    flex: 1;
+    background: #0f172a;
+    color: #00ffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .welcome-section.show { opacity: 1; transform: translateX(0); }
+  .welcome-section h1 { font-size: 2.2rem; margin-bottom: 10px; }
+  .welcome-section p { font-size: 1rem; color: #ccc; }
+
+  .extra { text-align: center; margin-top: 10px; color: #ccc; }
+  .extra a { color: #38bdf8; text-decoration: none; }
+  .extra a:hover { color: #00ffff; text-shadow: 0 0 5px #00ffff; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="main-header" id="mainHeader">
+  <div class="logo">
+    <span class="site-title">SecureWebAudit</span>
+  </div>
+  <nav class="nav-links">
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('login') }}">Login</a>
+    <a href="{{ url_for('help_page') }}">Help</a>
+  </nav>
+  <a href="{{ url_for('login') }}" class="login-btn">Login</a>
+</header>
+
+<!-- Page Heading -->
+<div class="page-heading">OTP Verification</div>
+
+<!-- OTP Container -->
+<div class="container" id="otpContainer">
+  <div class="form-section" id="formSection">
+    <h2>Enter OTP</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <p class="{{ category }}">{{ msg }}</p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('verify_otp') }}">
+      <div class="otp-inputs">
+        <input type="text" maxlength="1" name="otp1" required>
+        <input type="text" maxlength="1" name="otp2" required>
+        <input type="text" maxlength="1" name="otp3" required>
+        <input type="text" maxlength="1" name="otp4" required>
+        <input type="text" maxlength="1" name="otp5" required>
+        <input type="text" maxlength="1" name="otp6" required>
+      </div>
+      <button type="submit" class="btn">Verify</button>
+    </form>
+
+    <form method="POST" action="{{ url_for('resend_otp') }}">
+      <button type="submit" class="btn" style="background:#555; margin-top:10px;">Resend OTP</button>
+    </form>
+  </div>
+
+  <div class="welcome-section" id="welcomeSection">
+    <h1>SECURITY CHECK</h1>
+    <p>Please enter the OTP sent to your email.</p>
+  </div>
+</div>
+
+<script>
+  // Shrink header on scroll
+  window.addEventListener("scroll", function() {
+    const header = document.getElementById("mainHeader");
+    if (window.scrollY > 50) header.classList.add("shrink");
+    else header.classList.remove("shrink");
+  });
+
+  // Animate OTP container and sections on load
+  window.addEventListener("load", function() {
+    const container = document.getElementById("otpContainer");
+    const formSection = document.getElementById("formSection");
+    const welcomeSection = document.getElementById("welcomeSection");
+
+    setTimeout(() => container.classList.add("show"), 100);
+    setTimeout(() => formSection.classList.add("show"), 300);
+    setTimeout(() => welcomeSection.classList.add("show"), 500);
+  });
+
+  // Auto-move cursor between OTP inputs
+  const inputs = document.querySelectorAll(".otp-inputs input");
+  inputs.forEach((input, index, arr) => {
+    input.addEventListener("input", () => {
+      if(input.value && index < arr.length - 1) arr[index + 1].focus();
+    });
+    input.addEventListener("keydown", (e) => {
+      if(e.key === "Backspace" && !input.value && index > 0) arr[index - 1].focus();
+    });
+  });
+</script>
+</body>
+</html>

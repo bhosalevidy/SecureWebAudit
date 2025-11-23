@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - SecureWebAudit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1c2635);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ===== Header from Landing ===== */
+    .main-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2.5rem;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    .main-header.shrink { padding: 0.6rem 2rem; background: rgba(15,23,42,0.9); }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo-icon { width: 34px; height: 34px; filter: drop-shadow(0 0 6px #00ffff); }
+    .site-title { font-size: 1.6rem; font-weight: 700; color: #00ffff; letter-spacing: 1px; cursor: pointer; }
+    .nav-links { display: flex; gap: 1.8rem; }
+    .nav-links a {
+      color: #e5e5e5;
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      padding-bottom: 5px;
+    }
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      width: 0%;
+      height: 3px;
+      left: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, #00ffff, #38bdf8);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover { color: #00ffff; }
+    .nav-links a:hover::after { width: 100%; }
+    .login-btn {
+      background: linear-gradient(135deg, #00ffff, #38bdf8);
+      color: #000;
+      padding: 0.6rem 1.3rem;
+      border-radius: 30px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 12px rgba(0,255,255,0.3);
+    }
+    .login-btn:hover {
+      background: linear-gradient(135deg, #38bdf8, #00ffff);
+      box-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+    }
+
+    /* ===== Page Heading ===== */
+    .page-heading {
+      margin-top: 120px;
+      margin-bottom: 30px;
+      font-size: 2rem;
+      font-weight: 600;
+      color: #00ffff;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    /* ===== Container ===== */
+    .container {
+      display: flex;
+      width: 850px;
+      height: 460px;
+      border-radius: 80px;
+      box-shadow: 0 0 25px rgba(0,255,255,0.3);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .container.show { opacity: 1; transform: translateY(0); }
+
+    .form-section {
+      flex: 1;
+      padding: 80px;
+      background: #1e293b;
+      border-right: 1px solid #0f172a;
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .form-section.show { opacity: 1; transform: translateX(0); }
+
+    .form-section h2 { text-align: center; margin-bottom: 20px; color: #00ffff; }
+    .input-box { position: relative; margin-bottom: 20px; }
+    .input-box input {
+      width: 100%;
+      padding: 12px 40px 12px 10px;
+      border: none;
+      border-bottom: 2px solid #00ffff;
+      background: transparent;
+      color: white;
+      outline: none;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+    .input-box input:focus { border-color: #38bdf8; box-shadow: 0 0 8px #38bdf8; }
+    .input-box .icon { position: absolute; right: 0; top: 12px; font-size: 16px; color: #00ffff; }
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      background: #00ffff;
+      color: #000;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    .btn:hover { background: #00c7c7; color: #000; box-shadow: 0 0 12px #00ffff; }
+    .extra { text-align: center; margin-top: 15px; color: #ccc; }
+    .extra a { color: #38bdf8; text-decoration: none; transition: 0.3s; }
+    .extra a:hover { color: #00ffff; text-shadow: 0 0 5px #00ffff; }
+
+    .welcome-section {
+      flex: 1;
+      background: #0f172a;
+      color: #00ffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      text-align: center;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateX(50px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .welcome-section.show { opacity: 1; transform: translateX(0); }
+    .welcome-section h1 { font-size: 2.2rem; margin-bottom: 10px; }
+    .welcome-section p { font-size: 1rem; color: #ccc; }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Header from Landing -->
+  <header class="main-header" id="mainHeader">
+    <div class="logo">
+      <span class="site-title">SecureWebAudit</span>
+    </div>
+    <nav class="nav-links">
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('login') }}">Login</a>
+      <a href="{{ url_for('help_page') }}">Help</a>
+    </nav>
+    <a href="{{ url_for('login') }}" class="login-btn">Login</a>
+  </header>
+
+  <!-- New Page Heading -->
+  <div class="page-heading">Access Your Account</div>
+
+  <!-- Login Box with Welcome Card -->
+  <div class="container" id="loginContainer">
+    <div class="form-section" id="formSection">
+      <h2>Login</h2>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, msg in messages %}
+            <p class="{{ category }}">{{ msg }}</p>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      <form method="POST" action="{{ url_for('login') }}">
+        <div class="input-box">
+          <input type="text" name="username" placeholder="Username" required>
+          <span class="icon">👤</span>
+        </div>
+        <div class="input-box">
+          <input type="password" name="password" placeholder="Password" required>
+          <span class="icon">🔒</span>
+        </div>
+        <button type="submit" class="btn">Login</button>
+      </form>
+      <p class="extra">Don’t have an account? <a href="{{ url_for('register') }}">Sign Up</a></p>
+    </div>
+
+    <div class="welcome-section" id="welcomeSection">
+      <h1>WELCOME BACK!</h1>
+      <p>SecureWebAudit is ready to protect your web assets. Log in to continue.</p>
+    </div>
+  </div>
+
+  <script>
+    // Shrink header on scroll
+    window.addEventListener("scroll", function() {
+      const header = document.getElementById("mainHeader");
+      if (window.scrollY > 50) header.classList.add("shrink");
+      else header.classList.remove("shrink");
+    });
+
+    // Animate login container and sections on load
+    window.addEventListener("load", function() {
+      const container = document.getElementById("loginContainer");
+      const formSection = document.getElementById("formSection");
+      const welcomeSection = document.getElementById("welcomeSection");
+      
+      setTimeout(() => container.classList.add("show"), 100);
+      setTimeout(() => formSection.classList.add("show"), 300);
+      setTimeout(() => welcomeSection.classList.add("show"), 500);
+    });
+  </script>
+</body>
+</html>
