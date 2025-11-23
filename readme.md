@@ -91,6 +91,50 @@ pip install -r requirements.txt
 
 ---
 
+## Environment Variables (`.env`)
+
+This project requires certain environment variables to function (e.g., sending emails). For security reasons, sensitive credentials are **not included** in this repository.
+
+### Steps to Set Up `.env`
+
+1. Copy the example file:
+
+```bash
+cp .env.example .env
+
+GMAIL_EMAIL=your_email@gmail.com
+GMAIL_APP_PASSWORD=your_app_password
+
+GMAIL_EMAIL → your Gmail address
+
+GMAIL_APP_PASSWORD → Gmail App Password (required for sending emails securely)
+
+
+
+Setup & Installation
+
+Clone the repository:
+
+git clone https://github.com/<your-username>/SecureWebAudit.git
+cd SecureWebAudit
+
+
+Create and activate a Python virtual environment:
+
+python -m venv venv
+# On Windows
+venv\Scripts\activate
+# On Linux/Mac
+source venv/bin/activate
+
+
+Install dependencies:
+
+pip install -r requirements.txt
+
+
+Set up .env as described above.
+
 ## 🔹 Running the Project
 
 ```bash
